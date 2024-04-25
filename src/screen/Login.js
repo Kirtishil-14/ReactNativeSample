@@ -1,17 +1,23 @@
 import React, {useState, useEffect} from 'react';
-
 import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
+import {apiCall} from '../API/apiCall';
+
+const API = 'https://fakestoreapi.com/users';
 
 const Login = ({navigation}) => {
   const [state, setState] = useState({
-    email: '',
-    password: '',
+    username: 'john@gmail.com',
+    password: 'm38rmF$',
   });
   const [errMsg, setErrMsg] = useState('');
 
+  useEffect(() => {
+    //apiCall(API);
+  }, []);
+
   const handleLogin = () => {
-    if (state.email === '') {
-      setErrMsg('Please enter email...');
+    if (state.username === '') {
+      setErrMsg('Please enter username...');
     } else if (state.password === '') {
       setErrMsg('Please enter password...');
     } else {
@@ -21,17 +27,10 @@ const Login = ({navigation}) => {
 
   async function postJSON(data) {
     try {
-      const response = await fetch('https://reqres.in/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      //set token in async storage
-      if (result.token) {
-        Alert.alert('Login Successfully');
+      const result = await apiCall(API, 'POST', data);
+
+      console.info('here', result);
+      if (result.id) {
         navigation.navigate('Home');
       }
     } catch (error) {
@@ -56,9 +55,9 @@ const Login = ({navigation}) => {
           {errMsg}
         </Text>
         <TextInput
-          placeholder="email"
-          value={state.email}
-          onChangeText={text => setState({...state, email: text})}
+          placeholder="username"
+          value={state.username}
+          onChangeText={text => setState({...state, username: text})}
           style={{
             borderWidth: 1,
             borderColor: 'black',
