@@ -7,7 +7,7 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      getEmpData();
+      // getEmpData();
     });
 
     return unsubscribe;
